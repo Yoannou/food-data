@@ -1,0 +1,14 @@
+form {
+    margin: 20px auto;
+    padding: 50px;
+    width: 80%;
+    background-color: silver;
+}
+
+#search-results {
+    margin: 20px auto;
+    padding: 40px;
+    width: 80%;
+    background-color: rgba(50, 160, 20, 0.5);
+    display: none;
+}

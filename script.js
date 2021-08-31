@@ -40,10 +40,11 @@ searchForm.addEventListener('submit', (e) => {
 })
 
 async function searchFoods(keyword) {
+    // Ensure that it doesn't give you foods of the BRANDED datatype
+    const dataTypes = ["Foundation", "SR Legacy"];
     try {
-        // Ensure that it doesn't give you foods of the BRANDED datatype
         const res = await fetch('https://api.nal.usda.gov/fdc/v1/foods/search?api_key=' + APIKey
-        + '&query=' + keyword);
+        + '&query=' + keyword + '&dataType=' + dataTypes);
         const data = await res.json();
         console.log(data);
         if (data.totalHits < 1) {
@@ -55,7 +56,9 @@ async function searchFoods(keyword) {
             searchResults.innerText = "";
             for(let i=0; i<arr.length; i++) {
                 const entry = document.createElement("div");
-                const entryContent = document.createTextNode(arr[i].description)
+                const entryCals = arr[i].foodNutrients.filter(n => n.unitName == 'KCAL')[0].value;
+                const entryContent = document.createTextNode(arr[i].description + '    ' + entryCals);
+                console.log(entryCals);
                 entry.classList.add('entry');
                 entry.appendChild(entryContent);
                 searchResults.appendChild(entry);

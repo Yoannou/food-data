@@ -18,7 +18,6 @@ async function fetchFoodItem(fdcid) {
     try {
         const res = await fetch('https://api.nal.usda.gov/fdc/v1/food/' + fdcid + '?api_key=' + APIKey);
         const foodItem = await res.json();
-        console.log(foodItem)
         return foodItem;
     }
     catch (err) {
@@ -35,20 +34,37 @@ async function getCalories(foodItem) {
 // Search form
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    searchFoods();
-    searchForm.reset();
-    /*
     let keyword = searchForm.elements.search.value;
-    let t = "Results for: " +  keyword;
-    console.log(keyword)
-    searchResults.style.display = "block";
-    searchResults.innerText = t;
-    searchResults.innerText += "\n\n" + keyword;
-    e.preventDefault();
-    */
+    searchFoods(keyword);
+    searchForm.reset();
 })
 
-async function searchFoods() {
-    let keyword = searchForm.elements.search.value;
-    console.log(keyword);
+async function searchFoods(keyword) {
+    try {
+        // Ensure that it doesn't give you foods of the BRANDED datatype
+        const res = await fetch('https://api.nal.usda.gov/fdc/v1/foods/search?api_key=' + APIKey
+        + '&query=' + keyword);
+        const data = await res.json();
+        console.log(data);
+        if (data.totalHits < 1) {
+            searchResults.innerText = "No data for this item could be found."
+        }
+        else {
+            // Seems to have a length of 50 per page:
+            const arr = data.foods;
+            searchResults.innerText = "";
+            for(let i=0; i<arr.length; i++) {
+                const entry = document.createElement("div");
+                const entryContent = document.createTextNode(arr[i].description)
+                entry.classList.add('entry');
+                entry.appendChild(entryContent);
+                searchResults.appendChild(entry);
+            }
+        }
+        // Display results:
+        searchResults.style.display = "block";
+    }
+    catch (err) {
+        console.log("Search Error:\n" + err);
+    }
 }

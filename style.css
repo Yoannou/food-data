@@ -11,4 +11,14 @@ form {
     width: 80%;
     background-color: rgba(50, 160, 20, 0.5);
     display: none;
+    /* And because it is a pre: */
+    max-height: 400px;
+    font-size: 14px;
+    text-align: initial;
+    overflow-x: auto;
+}
+
+.entry {
+    margin: 2px;
+    padding: 10px;
 }

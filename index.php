@@ -16,7 +16,7 @@
             <input id="search-bar" style="width: 100%; margin-bottom: 10px; padding: 5px;" id="search" name="search" type="search" placeholder="Search...">
             <button type="submit">Submit</button>
         </form>
-        <div id="search-results"></div>
+        <div id="search-results-wrapper"><pre id="search-results"></pre></div>
     </div>
     <script src="./script.js"></script>
 </body>
